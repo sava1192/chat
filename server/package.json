@@ -1,0 +1,20 @@
+{
+  "name": "chat-server",
+  "version": "0.0.0",
+  "description": "server for chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -R spec"
+  },
+  "author": "Volodymyr Savchuk",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.14.0",
+    "socket.io": "^1.4.8"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3",
+    "socket.io-client": "^1.4.8"
+  }
+}
