@@ -16,7 +16,7 @@ describe('test', function () {
     done();
   });
 
-  it('should broadcast "new user" event to all users', function (done) {
+  it('should broadcast "add user" event to all users on login', function (done) {
     var client1 = io.connect('http://localhost:' + port, options);
     var client2 = io.connect('http://localhost:' + port, options);
     var client3 = io.connect('http://localhost:' + port, options);
@@ -27,20 +27,22 @@ describe('test', function () {
     var doneNumber = 0;
 
     client1.once('connect', function () {
-      client1.once('new user', function (user) {
+      client1.on('add user', function (user) {
+        console.log('[Client1] <- add user', user);
         user.should.be.deep.equal(newUser);
         bothDone();
       });
     });
     client2.once('connect', function () {
-      client2.once('new user', function (user) {
+      client2.on('add user', function (user) {
+        console.log('[Client2] <- add user', user);
         user.should.be.deep.equal(newUser);
         bothDone();
       });
     });
 
     client3.once('connect', function () {
-      client3.emit('new user', newUser);
+      client3.emit('login', newUser);
     });
 
     function bothDone () {
@@ -48,22 +50,38 @@ describe('test', function () {
       if (doneNumber > 1) {
         client1.disconnect();
         client2.disconnect();
+        client3.disconnect();
         done();
       }
     }
   });
+  // it('should send private message to specific user', function (done) {
+  //   var clients = [];
+  //   var clientsNumber = 3;
+  //   var connectedNumber = 0;
+  //   var i = 0;
 
-  it('should send private message to specific user and not to other', function (done) {
-    var client1 = io.connect('http://localhost:' + port, options);
-    var client2 = io.connect('http://localhost:' + port, options);
-    var client3 = io.connect('http://localhost:' + port, options);
+  //   // initialization stuff
+  //   for (; i < clientsNumber; i++) {
+  //     clinets.push(io.connect('http://localhost:' + port, options));
+  //   }
+  //   clinets.forEach(function (client) {
+  //     client.once('connect', function () {
+  //       client.emit('login');
+  //       client.once('logged in', function () {
+  //         connectedNumber++;
+  //         if (connectedNumber === clients.length - 1) {
+  //           allConnected();
+  //         }
+  //       });
+  //     });
+  //   });
 
-    client1.once('connect', function () {
-      client2.once('connect', function () {
-        client1
-      });
-    });
-
-  });
+  //   // real tests start here
+  //   function allConnected () {
+  //     clients[0].emit('private message', 2, 'message');
+  //     clients[2].once
+  //   }
+  // });
 
 });
