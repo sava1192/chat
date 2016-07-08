@@ -55,33 +55,41 @@ describe('test', function () {
       }
     }
   });
-  // it('should send private message to specific user', function (done) {
-  //   var clients = [];
-  //   var clientsNumber = 3;
-  //   var connectedNumber = 0;
-  //   var i = 0;
+  it('should send private message to specific user', function (done) {
+    var clients = [];
+    var clientsNumber = 3;
+    var connectedNumber = 0;
+    var i = 0;
 
-  //   // initialization stuff
-  //   for (; i < clientsNumber; i++) {
-  //     clinets.push(io.connect('http://localhost:' + port, options));
-  //   }
-  //   clinets.forEach(function (client) {
-  //     client.once('connect', function () {
-  //       client.emit('login');
-  //       client.once('logged in', function () {
-  //         connectedNumber++;
-  //         if (connectedNumber === clients.length - 1) {
-  //           allConnected();
-  //         }
-  //       });
-  //     });
-  //   });
+    // initialization stuff
+    for (; i < clientsNumber; i++) {
+      clients.push(io.connect('http://localhost:' + port, options));
+    }
+    clients.forEach(function (client, i) {
+      client.once('connect', function () {
+        client.emit('login', {id: i});
+        client.userId = i;
+        client.once('logged in', function () {
+          connectedNumber++;
+          if (connectedNumber === clients.length - 1) {
+            allConnected();
+          }
+        });
+      });
+    });
 
-  //   // real tests start here
-  //   function allConnected () {
-  //     clients[0].emit('private message', 2, 'message');
-  //     clients[2].once
-  //   }
-  // });
+    // real tests start here
+    // TODO: more tests for private messages
+    function allConnected () {
+      clients[0].emit('private message', 2, 'message');
+      clients[2].once('private message', function (from, message) {
+        console.log('[Client2] <- private message', arguments);
+        from.should.be.equal(clients[0].userId);
+        message.should.equal('message');
+        clients.forEach(client => client.disconnect());
+        done();
+      });
+    }
+  });
 
 });

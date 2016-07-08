@@ -15,7 +15,7 @@ io.on('connection', socket => {
 
   socket.on('login', newUser => {
     debug && console.log('[Server] <- login', newUser);
-    debug && console.log('[Server] -> new user', newUser);
+    debug && console.log('[Server] -> add user', newUser);
 
     socket.broadcast.emit('add user', newUser);
 
@@ -26,9 +26,17 @@ io.on('connection', socket => {
     socket.userId = newUser.id;
   });
 
+  socket.on('disconnect', () => {
+    users.splice(users.findIndex(item => item.userId === socket.userId), 1);
+
+    debug && console.log('[Server] -> remove user', socket.userId);
+
+    socket.broadcast.emit('remove user', socket.userId);
+  });
+
   socket.on('private message', (to, message) => {
-    debug && console.log('[Server] <- private message', message);
-    debug && console.log('[Server] -> private message', message);
+    debug && console.log('[Server] <- private message', to, message);
+    debug && console.log('[Server] -> private message', socket.userId, message);
 
     sockets.find(item => item.userId === to).emit('private message', socket.userId, message);
   });
