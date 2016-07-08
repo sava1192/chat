@@ -16,24 +16,54 @@ describe('test', function () {
     done();
   });
 
-  it('test', function (done) {
-    var client = io.connect('http://localhost:' + port, options);
+  it('should broadcast "new user" event to all users', function (done) {
+    var client1 = io.connect('http://localhost:' + port, options);
+    var client2 = io.connect('http://localhost:' + port, options);
+    var client3 = io.connect('http://localhost:' + port, options);
+    var newUser = {
+      name: 'user name',
+      id: '3983459738'
+    };
+    var doneNumber = 0;
 
-    client.once('connect', function () {
-      client.once('test', function (message) {
-        message.should.equal('hello');
-
-        client.disconnect();
-        done();
-      })
-
-      client.emit('test', 'hello');
+    client1.once('connect', function () {
+      client1.once('new user', function (user) {
+        user.should.be.deep.equal(newUser);
+        bothDone();
+      });
     });
+    client2.once('connect', function () {
+      client2.once('new user', function (user) {
+        user.should.be.deep.equal(newUser);
+        bothDone();
+      });
+    });
+
+    client3.once('connect', function () {
+      client3.emit('new user', newUser);
+    });
+
+    function bothDone () {
+      ++doneNumber;
+      if (doneNumber > 1) {
+        client1.disconnect();
+        client2.disconnect();
+        done();
+      }
+    }
   });
-  // it('should broadcast new user to all users', function (done) {
-  //   var client1 = io.connect('http://localhost:' + port, options);
-  //   var client2 = io.connect('http://localhost:' + port, options);
 
+  it('should send private message to specific user and not to other', function (done) {
+    var client1 = io.connect('http://localhost:' + port, options);
+    var client2 = io.connect('http://localhost:' + port, options);
+    var client3 = io.connect('http://localhost:' + port, options);
 
-  // });
+    client1.once('connect', function () {
+      client2.once('connect', function () {
+        client1
+      });
+    });
+
+  });
+
 });

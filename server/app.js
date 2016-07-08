@@ -2,9 +2,11 @@ var app = require('express')();
 var server = require('http').Server(app)
 var io = require('socket.io')(server);
 var port = 3000;
+var onlineUsers = [];
+var debug = true;
 
 server.listen(3000, function () {
-  console.log('test app is listing on port ' + port);
+  debug && console.log('server: app is listening on port ' + port);
 });
 
 // app.get('/', function (req, res) {
@@ -12,9 +14,9 @@ server.listen(3000, function () {
 // });
 
 io.on('connection', function (socket) {
-  socket.on('test', function (message) {
-    console.log('test happend', arguments);
-
-    socket.emit('test', message);
+  socket.on('new user', function (newUser) {
+    debug && console.log('server: new user', newUser);
+    onlineUsers.push(newUser);
+    socket.broadcast.emit('new user', newUser);
   });
 });
