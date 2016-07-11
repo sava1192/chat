@@ -1,3 +1,8 @@
-let b = a => console.log(a);
+import angular from 'angular';
+import AppComponent from './app.component';
 
-b();
+const root = angular
+  .module('app', [])
+  .component('app', AppComponent);
+
+export default root;

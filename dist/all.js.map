@@ -1,1 +1,0 @@
-{"version":3,"sources":["app.js"],"names":[],"mappings":";;AAAA,IAAI,IAAI,SAAJ,CAAI;AAAA,SAAK,QAAQ,GAAR,CAAY,CAAZ,CAAL;AAAA,CAAR;;AAEA","file":"all.js","sourcesContent":["let b = a => console.log(a);\r\n\r\nb();\r\n"],"sourceRoot":"/source/"}
