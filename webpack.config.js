@@ -18,8 +18,12 @@ module.exports = {
   },
   plugins: [
     // Avoid publishing files when compilation fails
-    new webpack.NoErrorsPlugin()
+    new webpack.NoErrorsPlugin(),
+    // new webpack.optimize.MinChunkSizePlugin({sourceMap: true})
   ],
+  externals: {
+    fb: 'var FB'
+  },
   stats: {
     // Nice colored output
     colors: true

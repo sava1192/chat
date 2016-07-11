@@ -1,10 +1,10 @@
 const AppComponent = {
-  tempalte: `
+  template: `
     <header>
       some header
     </header>
     <div>
-      <div> HELLO WORLD </div>
+      <login></login>
     </div>
     <footer>
       made by Sava
