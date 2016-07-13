@@ -4,7 +4,7 @@ const LayoutComponent = {
   controller,
   template: `
     <div>layout component</div>
-    <login status="$ctrl.status>
+    <login status="$ctrl.status">
   `
 };
 
