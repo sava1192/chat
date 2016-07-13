@@ -2,8 +2,7 @@ import controller from './login.controller';
 
 const LoginComponent = {
   bindings: {
-    status: '<',
-    onStatusChange: '&'
+    status: '<'
   },
   controller,
   template: `
