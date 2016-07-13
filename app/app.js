@@ -1,10 +1,12 @@
 import angular from 'angular';
 import AppComponent from './app.component';
 import Common from './common';
+import Components from './components';
 
 const root = angular
   .module('app', [
-    Common
+    Common,
+    Components
   ])
   .component('app', AppComponent);
 

@@ -4,7 +4,7 @@ const AppComponent = {
       some header
     </header>
     <div>
-      <login></login>
+      <layout></layout>
     </div>
     <footer>
       made by Sava

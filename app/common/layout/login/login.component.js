@@ -1,10 +1,14 @@
 import controller from './login.controller';
 
 const LoginComponent = {
+  bindings: {
+    status: '<',
+    onStatusChange: '&'
+  },
   controller,
   template: `
-    <div class="login">
-      <button ng-click="$ctrl.loginFB()">login with facebook</button>
+    <div ng-show="$ctrl.status.notLoggedIn">
+      <fb:login-button"></fb:login-button>
     </div>
   `
 };

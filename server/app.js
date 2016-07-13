@@ -1,4 +1,5 @@
-var app = require('express')();
+var express = require('express');
+var app = express();
 var server = require('http').Server(app)
 var io = require('socket.io')(server);
 var port = 3000;
@@ -6,6 +7,7 @@ var users = [];
 var sockets = [];
 var debug = true;
 
+app.use('/', express.static('../dist'));
 server.listen(3000, function () {
   debug && console.log('[Server]: app is listening on port ' + port);
 });

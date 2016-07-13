@@ -1,9 +1,9 @@
 import angular from 'angular';
-import Login from './login';
+import Layout from './layout';
 
 const common = angular
   .module('app.common', [
-    Login
+    Layout
   ])
   .name;
 
