@@ -9,28 +9,39 @@ class SocialService {
       xfbml: true,
       version: 'v2.6'
     });
-    // this.fb.Event.subscribe('auth.statusChange', res =>{
-    //   console.log('statuschage', res);
-    // })
+  }
+  createStatusFromFB(status) {
+    let result = {},
+        statusCode;
+
+    switch (status) {
+      case 'connected':
+        statusCode = '111';
+        break;
+      case 'not_authorized':
+        statusCode = '001';
+        break;
+      case 'unknown':
+        statusCode = '000';
+      default:
+        statusCode = '000';
+        break
+    }
+    ['ok', 'hasAccess', 'loggedIn']
+      .forEach((item, i) => result[item] = !!(statusCode[i]|0));
+
+    return result;
   }
   getStatus() {
     let deferred = this.$q.defer();
     this.fb.getLoginStatus(response => {
-      let status = response.status;
-
-      if (status === 'connected') {
-        deferred.resolve({ok: true});
-      } else if (status === 'not_authorized') {
-        deferred.resolve({noAccess: true});
-      } else if (status === 'unknown') {
-        deferred.resolve({notLoggedIn: true});
-      } else {
-        deferred.resolve(status);
-      }
-      // real reject can not be caught here, because of FaceBook API
+      deferred.resolve(this.createStatusFromFB(response.status))
     });
 
     return deferred.promise;
+  }
+  loginToFB() {
+    this.fb.login();
   }
 }
 

@@ -1,5 +1,6 @@
 class LoginController {
-  constructor() {
+  constructor(SocialService) {
+    this.socialService = SocialService;
   }
   $onChanges(changes) {
     let status = changes.status;
@@ -9,6 +10,11 @@ class LoginController {
       this.status = Object.assign({}, status.currentValue);
     }
   }
+  loginToFB() {
+    this.socialService.loginToFB();
+  }
 }
+
+LoginController.$inject = ['SocialService'];
 
 export default LoginController;

@@ -6,8 +6,8 @@ const LoginComponent = {
   },
   controller,
   template: `
-    <div ng-show="$ctrl.status.notLoggedIn">
-      <fb:login-button"></fb:login-button>
+    <div ng-show="!$ctrl.status.ok">
+      <button ng-click="$ctrl.loginToFB()">log in to facebook</button>
     </div>
   `
 };
