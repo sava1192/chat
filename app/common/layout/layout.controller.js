@@ -1,3 +1,4 @@
+export default LayoutController;
 class LayoutController {
   constructor($rootScope, SocialService) {
     this.socialService = SocialService;
@@ -5,14 +6,10 @@ class LayoutController {
   }
   $onInit() {
     this.status = {};
-    this.$rootScope.$on('loginStatusChange', function() {
-      console.log(arguments);
-      debugger;
-    });
+    this.$rootScope.$on('loginStatusChange', (e, status) => this.updateStatus(status));
     this.updateStatus();
   }
   updateStatus(status) {
-    console.log('updateStatus', status);
     if (status) {
       this.status = status;
     } else {

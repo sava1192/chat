@@ -2,7 +2,7 @@ import angular from 'angular';
 import LoginComponent from './login.component';
 
 const login = angular
-  .module('login', [])
+  .module('layout.login', [])
   .component('login', LoginComponent)
   .name;
 
