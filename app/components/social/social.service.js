@@ -1,14 +1,22 @@
 import FB from 'fb';
 
 class SocialService {
-  constructor($q) {
+  constructor($rootScope, $q) {
     this.$q = $q;
     this.fb = FB;
+    this.$rootScope = $rootScope;
+
     this.fb.init({
       appId: '1317358851610812',
       xfbml: true,
       version: 'v2.6'
     });
+    this.fb.Event.subscribe('auth.statusChange', status => {
+      this.onStatusChangeFB(status)
+    });
+  }
+  onStatusChangeFB(status) {
+    this.$rootScope.$broadcast('loginStatusChange', this.createStatusFromFB(status));
   }
   createStatusFromFB(status) {
     let result = {},
@@ -45,6 +53,6 @@ class SocialService {
   }
 }
 
-SocialService.$inject = ['$q'];
+SocialService.$inject = ['$rootScope', '$q'];
 
 export default SocialService;
