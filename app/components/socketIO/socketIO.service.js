@@ -1,28 +1,27 @@
-import FB from 'fb';
+import io from 'socket.io-client';
 
 class SocketIOService {
-  constructor(SocialService) {
-    this.fb = FB;
-    // this.fb.Event.subscribe('auth.statusChange', res =>{
-    //   console.log('statuschage', res);
-    // })
+  constructor($q, SocialService) {
     this.socialService = SocialService;
-    this.socialService.getStatus().then(status => {
-      if (status.ok) {
-        this.connectToServer();
-      } else {
-
-      }
-    });
+    this.$q = $q;
   }
-  // checkStatus() {
-  //   this.socialService.getStatus().then(status => {
-  //     if (status.ok) {
+  $onInit() {
+  }
 
-  //     }
-  //   });
-  // }
   connectToServer() {
-
+    return this.$q(resolve => this.socialService.getMyInfo().then(info => {
+      this.socket = io('localhost:3000');
+      this.socket.once('connect', () => {
+        this.socket.emit('login', {
+          name: info.data.name,
+          id: info.data.id
+        });
+        this.socket.once('logged in', users => resolve(users));
+      });
+    }));
   }
 }
+
+SocketIOService.$inject = ['$q', 'SocialService'];
+
+export default SocketIOService;

@@ -1,11 +1,14 @@
+import controller from './main.controller';
+
 const MainComponent = {
   bindings: {
     status: '<'
   },
+  controller,
   template: `
-    <div ng-show="$ctrl.status.ok">
+    <div ng-if="$ctrl.status.ok">
       chat view here
-      <users></users>
+      <user ng-repeat="user in $ctrl.users" user="user"></user>
       <chat></chat>
     </div>
   `

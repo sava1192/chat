@@ -11,8 +11,8 @@ class SocialService {
       xfbml: true,
       version: 'v2.6'
     });
-    this.fb.Event.subscribe('auth.statusChange', status => {
-      this.onStatusChangeFB(status)
+    this.fb.Event.subscribe('auth.statusChange', response => {
+      this.onStatusChangeFB(response.status);
     });
   }
   onStatusChangeFB(status) {
@@ -31,9 +31,10 @@ class SocialService {
         break;
       case 'unknown':
         statusCode = '000';
+        break;
       default:
         statusCode = '000';
-        break
+        break;
     }
     ['ok', 'hasAccess', 'loggedIn']
       .forEach((item, i) => result[item] = !!(statusCode[i]|0));
@@ -43,13 +44,28 @@ class SocialService {
   getStatus() {
     let deferred = this.$q.defer();
     this.fb.getLoginStatus(response => {
-      deferred.resolve(this.createStatusFromFB(response.status))
+      deferred.resolve(this.createStatusFromFB(response.status));
     });
 
     return deferred.promise;
   }
   loginToFB() {
     this.fb.login();
+  }
+  getMyInfo() {
+    return this.$q(resolve => {
+      this.fb.getLoginStatus(status => resolve(status));
+    }).then(response => {
+      return this.$q(resolve => {
+          this.fb.api('/me', 'get', {
+            accessToken: response.authResponse.accessToken
+          }, data => resolve({
+            status: response.status,
+            authResponse: response.authResponse,
+            data
+          }));
+        });
+    });
   }
 }
 

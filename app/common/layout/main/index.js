@@ -1,10 +1,10 @@
 import angular from 'angular';
 import MainComponent from './main.component.js';
-import Users from './users';
+import User from './user';
 
 const main = angular
   .module('layout.main', [
-    Users
+    User
   ])
   .component('main', MainComponent)
   .name;
