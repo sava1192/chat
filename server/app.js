@@ -29,11 +29,15 @@ io.on('connection', socket => {
   });
 
   socket.on('disconnect', () => {
-    users.splice(users.findIndex(item => item.userId === socket.userId), 1);
+    var index = users.findIndex(item => item.id === socket.userId);
 
-    debug && console.log('[Server] -> remove user', socket.userId);
-
-    socket.broadcast.emit('remove user', socket.userId);
+    if (index !== -1){
+      users.splice(index, 1);
+      debug && console.log('[Server] -> remove user', socket.userId);
+      socket.broadcast.emit('remove user', socket.userId);
+    } else {
+      debug && console.log('[Server] <- old socket disconnect', socket.id);
+    }
   });
 
   socket.on('private message', (to, message) => {
