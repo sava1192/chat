@@ -23,7 +23,6 @@ class MainController {
   removeUser(userId) {
     let i = this.users.findIndex(user => user.id === userId);
     this.users.splice(i, 1);
-    // console.log(user, this.users.indexOf(user));
   }
 }
 

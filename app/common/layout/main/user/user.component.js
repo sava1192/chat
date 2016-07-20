@@ -8,7 +8,7 @@ const UserComponent = {
   controller,
   template: `
     <div ng-click="$ctrl.select()">
-      <b>{{$ctrl.user.name}}:</b> {{$ctrl.user.id}}
+      <b>{{$ctrl.user.name}}:</b>
     </div>
   `
 };
