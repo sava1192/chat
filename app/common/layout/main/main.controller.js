@@ -4,11 +4,14 @@ class MainController {
     this.socket = false;
     this.users = [];
     this.selectedUser = {};
-    window.c = this;
   }
   $onInit() {
     this.SocketIOService.connectToServer().then(users => this.users = users);
-    this.SocketIOService.ready.then(socket => this.socket = socket);
+    this.SocketIOService.ready.then(socket => {
+      this.socket = socket;
+      this.socket.on('add user', userId => this.users.push(userId));
+      this.socket.on('remove user', uId => this.removeUser(uId));
+    });
   }
   startNewChat($event) {
     let user = $event.user;
@@ -16,6 +19,11 @@ class MainController {
     if (!user || user.id === this.selectedUser.id) return;
 
     this.selectedUser = user;
+  }
+  removeUser(userId) {
+    let i = this.users.findIndex(user => user.id === userId);
+    this.users.splice(i, 1);
+    // console.log(user, this.users.indexOf(user));
   }
 }
 
