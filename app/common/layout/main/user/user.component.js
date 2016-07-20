@@ -1,10 +1,15 @@
+import controller from './user.controller';
+
 const UserComponent = {
   bindings: {
-    user: '<'
+    user: '<',
+    onStartChat: '&'
   },
+  controller,
   template: `
-    <div>
-      <b>{{$ctrl.user.name}}:</b> {{$ctrl.user.id}}</div>
+    <div ng-click="$ctrl.select()">
+      <b>{{$ctrl.user.name}}:</b> {{$ctrl.user.id}}
+    </div>
   `
 };
 

@@ -30,6 +30,12 @@ io.on('connection', socket => {
 
   socket.on('disconnect', () => {
     var index = users.findIndex(item => item.id === socket.userId);
+    var sIndex = sockets.findIndex(item => socket.id === item.id);
+
+    if (sIndex) {
+      sockets.splice(sIndex, 1);
+      debug && console.log('[Server] : remove socket ', socket.id);
+    }
 
     if (index !== -1){
       users.splice(index, 1);
@@ -41,9 +47,11 @@ io.on('connection', socket => {
   });
 
   socket.on('private message', (to, message) => {
+    var toSocket = sockets.find(item => item.userId === to);
     debug && console.log('[Server] <- private message', to, message);
-    debug && console.log('[Server] -> private message', socket.userId, message);
-
-    sockets.find(item => item.userId === to).emit('private message', socket.userId, message);
+    if (toSocket) {
+      toSocket.emit('private message', socket.userId, message);
+      debug && console.log('[Server] -> private message', socket.userId, message, toSocket.id);
+    }
   });
 });
