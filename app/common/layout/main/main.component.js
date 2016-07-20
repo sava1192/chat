@@ -6,7 +6,7 @@ const MainComponent = {
   },
   controller,
   template: `
-    <div ng-if="$ctrl.status.ok">
+    <div>
       chat view here
       <user ng-repeat="user in $ctrl.users"
             user="user"

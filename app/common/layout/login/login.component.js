@@ -6,7 +6,7 @@ const LoginComponent = {
   },
   controller,
   template: `
-    <div ng-show="!$ctrl.status.ok">
+    <div ng-show="$ctrl.status && !$ctrl.status.ok">
       You have to be logged in to start chat. Please log in!
       <button ng-click="$ctrl.loginToFB()">log in to facebook</button>
     </div>

@@ -1,7 +1,5 @@
 class MainController {
-  constructor(ChatService, SocialService, SocketIOService) {
-    this.ChatService = ChatService;
-    this.SocialService = SocialService;
+  constructor(SocketIOService) {
     this.SocketIOService = SocketIOService;
     this.socket = false;
     this.users = [];
@@ -9,14 +7,8 @@ class MainController {
     window.c = this;
   }
   $onInit() {
-    this.loginUser();
-  }
-  loginUser() {
     this.SocketIOService.connectToServer().then(users => this.users = users);
     this.SocketIOService.ready.then(socket => this.socket = socket);
-  }
-  setUsers(users) {
-    this.users = users;
   }
   startNewChat($event) {
     let user = $event.user;
@@ -27,6 +19,6 @@ class MainController {
   }
 }
 
-MainController.$inject = ['ChatService', 'SocialService', 'SocketIOService'];
+MainController.$inject = ['SocketIOService'];
 
 export default MainController;

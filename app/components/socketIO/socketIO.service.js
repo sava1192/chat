@@ -5,13 +5,11 @@ class SocketIOService {
     this.socialService = SocialService;
     this.$rootScope = $rootScope;
     this.$q = $q;
-    this.deferred = $q.defer();
+    this.deferred = this.$q.defer();
   }
-
   get ready() {
     return this.deferred.promise;
   }
-
   connectToServer() {
     return this.$q(resolve => this.socialService.getMyInfo().then(info => {
       this.socket = io('http://274567f8.ngrok.io/');

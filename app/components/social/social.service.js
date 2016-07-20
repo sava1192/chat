@@ -5,20 +5,22 @@ class SocialService {
     this.$q = $q;
     this.fb = FB;
     this.$rootScope = $rootScope;
-
+    this.deferred = this.$q.defer();
     this.fb.init({
       appId: '1317358851610812',
       xfbml: true,
       version: 'v2.6'
     });
-    this.fb.Event.subscribe('auth.statusChange', response => {
-      this.onStatusChangeFB(response.status);
+  }
+  on(eventName, callback) {
+    this.fb.Event.subscribe(eventName, (...args) => {
+      this.$rootScope.$apply(() => callback.apply(this, args));
     });
   }
-  onStatusChangeFB(status) {
-    this.$rootScope.$broadcast('loginStatusChange', this.createStatusFromFB(status));
+  get ready() {
+    return this.deferred.promise;
   }
-  createStatusFromFB(status) {
+  createStatus(status) {
     let result = {},
         statusCode;
 
@@ -42,12 +44,11 @@ class SocialService {
     return result;
   }
   getStatus() {
-    let deferred = this.$q.defer();
-    this.fb.getLoginStatus(response => {
-      deferred.resolve(this.createStatusFromFB(response.status));
+    return this.$q(resolve => {
+      this.fb.getLoginStatus(response => {
+        resolve(this.createStatus(response.status));
+      });
     });
-
-    return deferred.promise;
   }
   loginToFB() {
     this.fb.login();
