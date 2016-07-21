@@ -6,11 +6,14 @@ const MainComponent = {
   },
   controller,
   template: `
-    <div>
-      chat view here
-      <user ng-repeat="user in $ctrl.users"
+    <div class="chat_wrapper">
+      <div class="user_wrapper">
+        <div class="user_header">friends</div>
+        <user ng-repeat="user in $ctrl.users"
             user="user"
-            on-start-chat="$ctrl.startNewChat($event)"></user>
+            on-start-chat="$ctrl.startNewChat($event)">
+        </user>
+      </div>
       <chat user="$ctrl.selectedUser"
             socket="$ctrl.socket"
             ng-if="$ctrl.socket">

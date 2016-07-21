@@ -6,10 +6,11 @@ class ChatController {
     this.messages = [];
     this.newMessage = {
       in: false,
-      text: ``
+      text: ''
     };
     this.user = {};
-    this.socket.on(`private message`, (id, message) => this.addMessage(id, message));
+    this.socket.on('private message', (id, message) => this.addMessage(id, message));
+    window.onbeforeunload = () => this.saveHistory(this.user);
   }
   $onChanges(changes) {
     let user = changes.user;
@@ -22,11 +23,12 @@ class ChatController {
   addMessage(userId, message) {
     if (userId === this.user.id){
       this.messages.push({
-        text: `<- ${message}`,
+        text: message,
+        in: true,
         time: new Date().getTime()
       });
     } else {
-      console.log(`to users list:`, message);
+      console.log('to users list:', message);
     }
   }
   saveHistory(user) {
@@ -45,10 +47,11 @@ class ChatController {
     let message = this.newMessage.text;
 
     if (message) {
-      this.socket.emit(`private message`, this.user.id, message);
+      this.socket.emit('private message', this.user.id, message);
       this.newMessage.text = ``;
       this.messages.push({
-        text: `-> ` + message,
+        text: message,
+        in: false,
         time: new Date().getTime()
       });
     }

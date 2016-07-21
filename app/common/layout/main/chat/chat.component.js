@@ -7,10 +7,17 @@ const ChatComponent = {
   },
   controller,
   template: `
+    <div ng-hide="$ctrl.user.id" class="top"> Select a user to start a chat </div>
     <div ng-show="$ctrl.user.id">
-      <div>chatting with: {{$ctrl.user.name}}</div>
-      <div>
-        <div ng-repeat="message in $ctrl.messages track by message.time">{{message.text}}</div>
+      <div class="chat_whith">chatting with: <b>{{$ctrl.user.name}}</b></div>
+      <div class="scroll">
+        <div class="message"
+             scroll-down="$ctrl.messages"
+             ng-class="message.in ? 'in' : 'out'"
+             ng-repeat="message in $ctrl.messages track by message.time">
+          <small>{{message.time | date : 'shortTime'}}: </small>
+          {{message.text}}
+        </div>
       </div>
       <form ng-submit="$ctrl.sendMessage()">
         <input type="text" ng-model="$ctrl.newMessage.text"/>

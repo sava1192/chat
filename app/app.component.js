@@ -1,13 +1,13 @@
 const AppComponent = {
   template: `
     <header>
-      some header
+      Chat App
     </header>
     <div>
       <layout></layout>
     </div>
     <footer>
-      made by Sava
+      made by sava1192
     </footer>
   `
 };
