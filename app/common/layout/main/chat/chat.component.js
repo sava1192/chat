@@ -3,7 +3,8 @@ import controller from './chat.controller';
 const ChatComponent = {
   bindings: {
     user: '<',
-    socket: '<'
+    socket: '<',
+    onNewMessage: '&'
   },
   controller,
   template: `
@@ -14,9 +15,9 @@ const ChatComponent = {
         <div class="message"
              scroll-down="$ctrl.messages"
              ng-class="message.in ? 'in' : 'out'"
-             ng-repeat="message in $ctrl.messages track by message.time">
+             ng-repeat="message in $ctrl.messages track by $index">
           <small>{{message.time | date : 'shortTime'}}: </small>
-          {{message.text}}
+          <b>{{message.text}}</b>
         </div>
       </div>
       <form ng-submit="$ctrl.sendMessage()">

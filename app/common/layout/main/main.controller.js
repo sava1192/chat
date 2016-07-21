@@ -18,7 +18,23 @@ class MainController {
 
     if (!user || user.id === this.selectedUser.id) return;
 
+    this.selectedUser.selected = false;
+    user.selected = true;
     this.selectedUser = user;
+    // this.selectedUser.messages = [];
+  }
+  addMessageToUser($event) {
+    let id      = $event.userId,
+        message = $event.message,
+        user;
+
+    if (!id || !message) return;
+
+    user = this.users.find(user => user.id === id);
+    if (!user.messages) {
+      user.messages = [];
+    }
+    user.messages.push(message);
   }
   removeUser(userId) {
     let i = this.users.findIndex(user => user.id === userId);

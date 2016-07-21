@@ -13,11 +13,18 @@ class ChatController {
     window.onbeforeunload = () => this.saveHistory(this.user);
   }
   $onChanges(changes) {
-    let user = changes.user;
+    let user         = changes.user.currentValue,
+        previousUser = changes.user.previousValue;
+
     if (user) {
-      this.saveHistory(user.previousValue);
+      this.saveHistory(previousUser);
       this.messages = [];
-      this.getHistory(user.currentValue);
+      this.getHistory(user);
+      if (user.messages && user.messages.length) {
+        user.messages.forEach(message => this.addMessage(this.user.id, message));
+        // hope no one see it :)
+        user.messages = [];
+      }
     }
   }
   addMessage(userId, message) {
@@ -28,7 +35,12 @@ class ChatController {
         time: new Date().getTime()
       });
     } else {
-      console.log('to users list:', message);
+      this.onNewMessage({
+        $event: {
+          userId,
+          message
+        }
+      });
     }
   }
   saveHistory(user) {
